@@ -20,6 +20,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -110,10 +111,11 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
                     services.AddSingleton<SpaceReclaimerService>();
                     services.AddSingleton<ScpService>();
-                    services.AddSingleton<ScuExportService>();
-                    services.AddSingleton<DicomWebExportService>();
+                    //services.AddSingleton<ScuExportService>();
+                    //services.AddSingleton<DicomWebExportService>();
                     services.AddSingleton<DataRetrievalService>();
                     services.AddSingleton<PayloadNotificationService>();
+                    services.AddSingleton<MllpService>();
 
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
@@ -133,9 +135,10 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<SpaceReclaimerService>(p => p.GetService<SpaceReclaimerService>());
                     services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
-                    services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());
-                    services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
+                    //services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());
+                    //services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
                     services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());
+                    services.AddHostedService<MllpService>(p => p.GetService<MllpService>());
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
